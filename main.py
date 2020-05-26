@@ -18,8 +18,8 @@ mask = os.listdir(mask_path)
 print('number of data: ', len(data))
 print('number of mask: ', len(mask))
 
-sample = data[0:10]
-sample_mask = mask[0:10]
+sample = data[0:1]
+sample_mask = mask[0:1]
 print(sample)
 print(sample_mask)
 
@@ -29,5 +29,6 @@ mask_list = loadList(mask_path, sample_mask)
 for onedata in data_list:
     # hist_value = hist(onedata)
     # superpixel_value = super_pixel(onedata)
-    std = super_pixel(onedata)
-    print(std.shape)
+    # std = standard_deviation(onedata)
+    # edge = edge_detection(onedata)
+    # gabor_value = gabor(onedata)
