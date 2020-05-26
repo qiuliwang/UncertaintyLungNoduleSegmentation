@@ -61,7 +61,7 @@ def super_pixel(img):
     # # print(img.shape)
     rgb = np.concatenate((img, img, img), 2)
     # io.imsave('ori2.png', rgb)
-    obj = slic.SLICProcessor(rgb, 80, 10)
+    obj = slic.SLICProcessor(rgb, 4096, 5)
     res = obj.iterate_10times()
     return res
 
@@ -101,27 +101,7 @@ def gabor(img):
     return filt_imag
 
 
-# def glcm(img, d_x, d_y, gray_level=16):
-#     '''Gray Level Co-occurrence Matrix'''
-#     img = np.expand_dims(img, 2)
-#     # # print(img.shape)
-#     rgb = np.concatenate((img, img, img), 2)
-
-#     arr= cv2.cvtColor(rgb, cv2.COLOR_BGR2GRAY)
-#     print(arr)
-
-#     max_gray = arr.max()
-#     height, width = arr.shape
-#     arr = arr.astype(np.float64)  
-#     arr = arr * (gray_level - 1) // max_gray 
-#     ret = np.zeros([gray_level, gray_level])
-#     for j in range(height -  abs(d_y)):
-#         for i in range(width - abs(d_x)):  
-#             rows = arr[j][i].astype(int)
-#             cols = arr[j + d_y][i + d_x].astype(int)
-#             ret[rows][cols] += 1
-#     if d_x >= d_y:
-#         ret = ret / float(height * (width - 1))  
-#     else:
-#         ret = ret / float((height - 1) * (width - 1))  
-#     return ret
+def threshold_void(img):
+    void = truncate_hu(img, -600, -900)
+    # io.imsave('void.png', void)
+    return void
