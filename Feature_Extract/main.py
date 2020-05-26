@@ -21,10 +21,10 @@ print('number of mask: ', len(mask))
 sample = []
 sample_mask = []
 for one1 in data:
-    if 'LIDC-IDRI-0052_2_3000625' in one1:
+    if 'LIDC-IDRI-0055_3_3000581' in one1:
         sample.append(one1)
 for one2 in mask:
-    if 'LIDC-IDRI-0052_2_3000625' in one2:
+    if 'LIDC-IDRI-0055_3_3000581' in one2:
         sample_mask.append(one2)
 
 print(sample)
@@ -51,3 +51,8 @@ for onedata in data_list:
 
     void = threshold_void(onedata)
     io.imsave('void.png', void)
+
+    grey_level = toGrey(onedata)
+    io.imsave('grey_level.png', grey_level)
+    
+    # OTSU_value = OTSU(onedata)

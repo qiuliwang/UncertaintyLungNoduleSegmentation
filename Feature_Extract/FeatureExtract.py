@@ -105,3 +105,36 @@ def threshold_void(img):
     void = truncate_hu(img, -600, -900)
     # io.imsave('void.png', void)
     return void
+
+def normalization(image_array):
+    image_array = image_array + 900
+
+    max = 1300
+    min = 0
+    image_array = (image_array-min)/(max-min)  # float cannot apply the compute,or array error will occur
+    # avg = image_array.mean()
+    # image_array = image_array-avg
+    image_array = image_array * 255
+    return image_array   # a bug here, a array must be returned,directly appling function did't work
+
+def toGrey(img):
+    '''
+    get grey-level images
+    0-256
+    '''
+    img = truncate_hu(img)
+
+    img_nor = normalization(img)
+    # io.imsave('img_nor.png', img_nor)
+    return img_nor
+
+def OTSU(img):
+    gray = toGrey(img)
+    print(gray)
+
+    gray.dtype="int16"
+    print('int16')
+    print(gray)
+
+    retval, dst = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU)
+    io.imsave('OTSU.png', dst)
