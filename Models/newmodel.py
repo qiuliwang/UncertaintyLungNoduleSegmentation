@@ -36,7 +36,7 @@ class RCNNMODEL(BaseModel):
         """ Build the VGG16 net. """
         config = self.config
 
-        images = tf.placeholder(dtype = tf.float32, shape = [32, self.image_shape[0], self.image_shape[1], self.image_shape[2]])
+        images = tf.placeholder(dtype = tf.float32, shape = [-1, self.image_shape[0], self.image_shape[1], self.image_shape[2]])
 
         conv1_1_feats = self.nn.conv2d(images, 64, name = 'conv1_1')
         conv1_2_feats = self.nn.conv2d(conv1_1_feats, 64, name = 'conv1_2')
@@ -201,7 +201,7 @@ class RCNNMODEL(BaseModel):
         """ Build the ResNet50. """
         print ('Buinding the ResNet50')
         config = self.config
-        images = tf.placeholder(dtype = tf.float32, shape = [config.batch_size, self.image_shape[0], self.image_shape[1], 3])
+        images = tf.placeholder(dtype = tf.float32, shape = [None, self.image_shape[0], self.image_shape[1], 3])
         print ('shape of images: ', images.get_shape().as_list())
 
         conv1_feats = self.nn.conv2d(images,
@@ -356,7 +356,7 @@ class RCNNMODEL(BaseModel):
         if self.is_train:
             contexts = self.conv_feats
             print('shape of contexts: ', contexts.get_shape().as_list())
-            real_label = tf.placeholder(dtype = tf.int32, shape = [config.batch_size, 2])
+            real_label = tf.placeholder(dtype = tf.int32, shape = [None, 2])
             self.real_label = real_label
 
             logits = self.getLogitsForCNN(contexts)
