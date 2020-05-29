@@ -49,9 +49,9 @@ for one_npy in npy_data:
                     <malignancy>5</malignancy>
                     '''    
                     malignancy = float(onelabel[29])
-                    if malignancy >= 3.5:
+                    if malignancy > 3.5:
                         data_dic_high[one_npy[:one_npy.find('.')]] = 'high'
-                    elif malignancy <= 2.5:
+                    elif malignancy < 2.5:
                         data_dic_low[one_npy[:one_npy.find('.')]] = 'low'
                     else:
                         data_dic_mid[one_npy[:one_npy.find('.')]] = 'mid'
