@@ -7,10 +7,10 @@ Created by WangQL
 import csvTools
 import os
 
-labelCSV = csvTools.readCSV('D:/Data/nodules/malignancy.csv')
+labelCSV = csvTools.readCSV('/home/wangqiuli/raid/senet_data/files/malignancy.csv')
 print('number of samples: ', len(labelCSV))
 
-data_path = 'D:/Data/nodules/ori_hu/'
+data_path = '/home/wangqiuli/raid/senet_data/ori_hu/'
 npy_data = os.listdir(os.path.join(data_path))
 print('number of npy: ', len(npy_data))
 
@@ -49,9 +49,9 @@ for one_npy in npy_data:
                     <malignancy>5</malignancy>
                     '''    
                     malignancy = float(onelabel[29])
-                    if malignancy > 3.5:
+                    if malignancy >= 3.5:
                         data_dic_high[one_npy[:one_npy.find('.')]] = 'high'
-                    elif malignancy < 2.5:
+                    elif malignancy < 3.5:
                         data_dic_low[one_npy[:one_npy.find('.')]] = 'low'
                     else:
                         data_dic_mid[one_npy[:one_npy.find('.')]] = 'mid'

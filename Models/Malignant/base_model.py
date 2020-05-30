@@ -17,8 +17,7 @@ class BaseModel(object):
         self.config = config
         self.is_train = True if config.phase == 'train' else False
         self.train_cnn = self.is_train and config.train_cnn
-        self.image_loader = ImageLoader('./utils/ilsvrc_2012_mean.npy')
-        self.image_shape = [128, 128, 1]
+        self.image_shape = [128, 128, 3]
         self.nn = NN(config)
         self.global_step = tf.Variable(0,
                                        name = 'global_step',
@@ -49,11 +48,7 @@ class BaseModel(object):
             for t in range(times):
                 batch_files = np.array(train_data[t * config.batch_size:(t + 1) * config.batch_size])
                 batch_label = np.array(train_label[t * config.batch_size:(t + 1) * config.batch_size])
-                # print(len(batch_files))
-                # print(len(batch_label))
-                # print(batch_files.shape)
-                # print(batch_label.shape)
-
+                
                 feed_dict = {self.images: batch_files, self.real_label: batch_label}            
                 
                 _, summary, global_step = sess.run([self.opt_op,
@@ -61,13 +56,24 @@ class BaseModel(object):
                                                     self.global_step],
                                                     feed_dict=feed_dict)
 
-
+            feed_dict = {self.images: np.array(train_data[:256]), self.real_label: np.array(train_label[:256])}
+            loss, correctpred = sess.run([self.loss, self.correct_pred], feed_dict=feed_dict)
+            numberOfTrue = 0.0
+            for one in correctpred:
+                if one:
+                    numberOfTrue += 1
+            print('train loss: ', loss)
+            print('train acc: ', numberOfTrue / len(correctpred))
 
             feed_dict = {self.images: np.array(test_data), self.real_label: np.array(test_label)}
             loss, correctpred = sess.run([self.loss, self.correct_pred], feed_dict=feed_dict)
-
-            print('loss: ', loss)
-            print('acc: ', correctpercent / config.batch_size)
+            numberOfTrue = 0.0
+            for one in correctpred:
+                if one:
+                    numberOfTrue += 1
+            
+            print('valid loss: ', loss)
+            print('valid acc: ', numberOfTrue / len(correctpred))
 
             train_writer.add_summary(summary, global_step)
 

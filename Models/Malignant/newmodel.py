@@ -36,7 +36,7 @@ class RCNNMODEL(BaseModel):
         """ Build the VGG16 net. """
         config = self.config
 
-        images = tf.placeholder(dtype = tf.float32, shape = [-1, self.image_shape[0], self.image_shape[1], self.image_shape[2]])
+        images = tf.placeholder(dtype = tf.float32, shape = [None, self.image_shape[0], self.image_shape[1], self.image_shape[2]])
 
         conv1_1_feats = self.nn.conv2d(images, 64, name = 'conv1_1')
         conv1_2_feats = self.nn.conv2d(conv1_1_feats, 64, name = 'conv1_2')
@@ -69,12 +69,7 @@ class RCNNMODEL(BaseModel):
 
         print('shape of pool5_feats: ', pool5_feats.get_shape().as_list())
 
-        res5_gap = tf.nn.avg_pool(pool5_feats, ksize = [1, shapetemp[1], shapetemp[2], 1], strides = [1, shapetemp[1], shapetemp[2], 1], padding = 'VALID')
-        print('shape of res5_gap: ', res5_gap.get_shape().as_list())
-
-        shapetemp = res5_gap.get_shape().as_list()
-
-        reshape_res5_gap = tf.reshape(res5_gap, [-1, shapetemp[1] * shapetemp[2] * shapetemp[3]])
+        reshape_res5_gap = tf.reshape(pool5_feats, [-1, shapetemp[1] * shapetemp[2] * shapetemp[3]])
         print('shape of reshape_res5_gap: ', reshape_res5_gap.get_shape().as_list())
 
 
@@ -247,12 +242,12 @@ class RCNNMODEL(BaseModel):
         print('shape of res5c_feats: ', shapetemp)
         
 
-        res5c_gap = tf.nn.avg_pool(res5c_feats, ksize = [1, shapetemp[1], shapetemp[2], 1], strides = [1, shapetemp[1], shapetemp[2], 1], padding = 'VALID')
+        # res5c_gap = tf.nn.avg_pool(res5c_feats, ksize = [1, shapetemp[1], shapetemp[2], 1], strides = [1, shapetemp[1], shapetemp[2], 1], padding = 'VALID')
 
-        print('shape of res5c_gap: ', res5c_gap.get_shape().as_list())
-        shapetemp = res5c_gap.get_shape().as_list()
+        # print('shape of res5c_gap: ', res5c_gap.get_shape().as_list())
+        shapetemp = res5c_feats.get_shape().as_list()
 
-        reshape_res5c_gap = tf.reshape(res5c_gap, [-1, shapetemp[1] * shapetemp[2] * shapetemp[3]])
+        reshape_res5c_gap = tf.reshape(res5c_feats, [-1, shapetemp[1] * shapetemp[2] * shapetemp[3]])
         print('shape of reshape_res5c_gap: ', reshape_res5c_gap.get_shape().as_list())
 
         reshape_res5c_gap = tf.nn.relu(reshape_res5c_gap)

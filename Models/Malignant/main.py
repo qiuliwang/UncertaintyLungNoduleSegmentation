@@ -10,7 +10,7 @@ import random
 import tensorflow.contrib.slim as slim
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
-gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.45)
+gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.4)
 data = Data()
 
 checkpoint_file = 'inception_v3_2016_08_28/inception_v3.ckpt'  
@@ -46,11 +46,12 @@ print('number of train data: ', len(train_data))
 print('number of valid data: ', len(valid_data))
 print('number of test data: ', len(test_data))
 
+print(train_data[0].shape)
+
 config = Config()
 
 load = False
 load_cnn = False
-
 
 with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
 # with tf.Session() as sess:
@@ -74,9 +75,4 @@ with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
     
     model.train(sess, train_data, train_label, valid_data, valid_label, data, False)
 
-    # model.train(sess, traindata, validdata, data, False)
 
-    # model.train(sess, traindata, validdata, data, False)
-    
-    # model.test(sess, validdata, data, 'test')
-    

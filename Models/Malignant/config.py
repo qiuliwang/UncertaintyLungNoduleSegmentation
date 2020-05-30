@@ -27,12 +27,12 @@ class Config(object):
         self.attention_loss_factor = 0.01
 
         # about the optimization
-        self.num_epochs = 15
+        self.num_epochs = 45
         self.batch_size = 32
-        self.optimizer = 'Momentum'    # 'Adam', 'RMSProp', 'Momentum' or 'SGD'
-        self.initial_learning_rate = 0.0005
+        self.optimizer = 'Adam'    # 'Adam', 'RMSProp', 'Momentum' or 'SGD'
+        self.initial_learning_rate = 0.0001
         
-        self.learning_rate_decay_factor = 0.5
+        self.learning_rate_decay_factor = 0.7
         self.num_steps_per_decay = 3000
         
         self.clip_gradients = 5.0

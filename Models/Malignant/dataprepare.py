@@ -30,11 +30,10 @@ class Data(object):
         image_array = (image_array-min)/(max-min)
         # avg = image_array.mean()
         # image_array = image_array-avg
-        image_array = image_array * 255
+        image_array = image_array
         # image_array.dtype = 'int16'
         pngfile = np.array([image_array, image_array, image_array])
-        pngfile = np.array(pngfile).transpose(1,2,0)
-
+        pngfile = pngfile.transpose(1, 2, 0)
         return pngfile  
 
     def angle_transpose(self, array,degree):
@@ -59,29 +58,6 @@ class Data(object):
         #     newarr[depth,:,:] = np.array(out).reshape(array.shape[1],-1)[:,:]
         # newarr = newarr.transpose(2,1,0)
         return newarr
-
-    def load_and_preprocess_image(self, img_path):
-        '''
-        Modified by Wang Qiuli
-        2020/5.27
-        '''
-
-        # read pictures
-        # decode pictures    
-        # print(tf.shape(img_path))
-        # print(img_path)
-        img_tensor = tf.expand_dims(img_path, -1)
-        # print(tf.shape(img_tensor))
-        # print(img_tensor)
-        # resize
-        img_tensor = tf.image.resize(img_tensor, [image_height, image_width])
-        # print(img_tensor)
-
-        img_tensor = tf.cast(img_tensor, tf.float32)
-        # print(img_tensor)
-        # normalization
-        img = img_tensor / 255.0
-        return img
 
     def get_images_and_labels(self, data_root_dir, isTrain = False):
         '''
@@ -112,19 +88,23 @@ class Data(object):
                 if 'low' in one_data[1]:            
                     all_image_path.append(nor_npy)
                     all_image_label.append(label)
+                    # two = self.angle_transpose(nor_npy, 2)
+                    # all_image_path.append(two)
+                    # all_image_label.append(label)
+
                 else:
                     all_image_path.append(nor_npy)
                     all_image_label.append(label)
 
                     one = self.angle_transpose(nor_npy, 1)
-                    # two = angle_transpose(nor_npy, 2)
+                    two = self.angle_transpose(nor_npy, 2)
                     three = self.angle_transpose(nor_npy, 3)
 
                     all_image_path.append(one)
                     all_image_label.append(label)
 
-                    # all_image_path.append(two)
-                    # all_image_label.append(label)
+                    all_image_path.append(two)
+                    all_image_label.append(label)
 
                     all_image_path.append(three)
                     all_image_label.append(label)
