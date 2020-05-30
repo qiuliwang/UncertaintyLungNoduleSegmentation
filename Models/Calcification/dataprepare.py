@@ -88,8 +88,17 @@ class Data(object):
                 if 'low' in one_data[1]:            
                     all_image_path.append(nor_npy)
                     all_image_label.append(label)
+
+                    one = self.angle_transpose(nor_npy, 1)
+                    all_image_path.append(one)
+                    all_image_label.append(label)
+                    
                     two = self.angle_transpose(nor_npy, 2)
                     all_image_path.append(two)
+                    all_image_label.append(label)
+
+                    three = self.angle_transpose(nor_npy, 3)
+                    all_image_path.append(three)
                     all_image_label.append(label)
 
                 else:

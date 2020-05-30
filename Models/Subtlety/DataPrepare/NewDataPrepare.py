@@ -48,7 +48,7 @@ for one_npy in npy_data:
                     28<texture>5</texture>
                     29<malignancy>5</malignancy>
                     '''    
-                    malignancy = float(onelabel[25])
+                    malignancy = float(onelabel[21])
                     if malignancy >= 3.5:
                         data_dic_high[one_npy[:one_npy.find('.')]] = 'high'
                     elif malignancy < 3.5:

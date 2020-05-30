@@ -8,7 +8,7 @@ from newmodel import RCNNMODEL
 import csvTools
 import random
 import tensorflow.contrib.slim as slim
-os.environ["CUDA_VISIBLE_DEVICES"] = "3"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.3)
 data = Data()
