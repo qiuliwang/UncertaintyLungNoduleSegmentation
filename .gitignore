@@ -1,0 +1,14 @@
+*.pyc
+*.png
+/Models/saved_model/*
+/Models/.idea
+/Models/__pycache__
+/Models/dataset/*
+!/dataset/README.md
+/Models/original_dataset/*
+!/original_dataset/README.md
+*.npy
+*.csv
+Models/inception_v3_2016_08_28/*
+*.ckpt
+/Models/*/summary/*

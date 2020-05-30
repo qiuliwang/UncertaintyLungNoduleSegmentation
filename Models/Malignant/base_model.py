@@ -12,6 +12,28 @@ from utils.nn import NN
 import cv2
 from utils.misc import ImageLoader, CaptionData, TopN
 from sklearn.metrics import roc_auc_score,recall_score
+
+def GetSenAndSpi(labels, predictions):
+    TP = 0.0
+    FP = 0.0
+    TN = 0.0
+    FN = 0.0
+
+    for label, pred in zip(labels, predictions):
+        if label[0] == 1 and pred == True:
+            TP += 1
+        elif label[0] == 1 and pred == False:
+            FP += 1
+        elif label[0] == 0 and pred == True:
+            TN += 1
+        elif label[0] == 0 and pred == False:
+            FN += 1
+    
+    Sensitivity = (TP) / (TP + FP)
+    Specificity = (TN) / (TN + FN)
+    return Sensitivity, Specificity
+
+
 class BaseModel(object):
     def __init__(self, config):
         self.config = config
@@ -71,9 +93,12 @@ class BaseModel(object):
             for one in correctpred:
                 if one:
                     numberOfTrue += 1
-            
+            Sensitivity, Specificity = GetSenAndSpi(test_label, correctpred)
+
             print('valid loss: ', loss)
             print('valid acc: ', numberOfTrue / len(correctpred))
+            print('valid Sen: ', Sensitivity)
+            print('valid Spic', Specificity)
 
             train_writer.add_summary(summary, global_step)
 
