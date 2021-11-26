@@ -211,8 +211,10 @@ class VGG16Net(nn.Module):
 
         if flag1:
             low_ckd = self.conv_channelalig1(o1)
-            mid_ckd = self.conv_channelalig2(o3)
-            high_ckd = self.conv_channelalig3(o6)
+            o3_2 = F.interpolate(o3, size=(96,96), mode='bilinear', align_corners=True)
+            mid_ckd = self.conv_channelalig2(o3_2)
+            o6_2 = F.interpolate(o6, size=(96,96), mode='bilinear', align_corners=True)
+            high_ckd = self.conv_channelalig3(o6_2)
 
         if flag2:
 

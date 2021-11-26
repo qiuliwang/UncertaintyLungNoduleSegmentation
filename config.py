@@ -8,7 +8,7 @@ class Config(object):
         # training settings
         self.epochs = 300
         self.learning_rate = 0.0001
-        self.gpu = 1
+        self.gpu = 0
         self.evaluate = False # test or train
         self.resume = False
         self.num_classes = 3

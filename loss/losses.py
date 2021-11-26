@@ -130,9 +130,6 @@ class KDChannelLoss(nn.Module):
     def forward(self, source_logits, target_logits, gt, num_classes):
         kd_loss = 0.0
 
-        source_logits = source_logits
-        target_logits = target_logits
-
         source_prob = []
         target_prob = []
 
@@ -144,16 +141,15 @@ class KDChannelLoss(nn.Module):
 
             s_mask = torch.unsqueeze(gt[:,i,:,:], 1).repeat([1,num_classes,1,1])
             s_logits_mask_out = source_logits * s_mask
-            s_logits_avg = torch.sum(s_logits_mask_out, [0,1,2]) / (torch.sum(gt[:,:,:,i]) + eps)
-            print(s_logits_avg.shape)
-            s_soft_prob = torch.softmax(s_logits_avg/temperature)
+            s_logits_avg = torch.sum(s_logits_mask_out, [0,2,3]) / (torch.sum(gt[:,i,:,:]) + eps)
+            s_soft_prob = F.softmax(s_logits_avg/temperature, dim=0)
 
             source_prob.append(s_soft_prob)
 
-            t_mask = torch.unsqueeze(gt[:,:,:,i], -1).repeat([1,1,1,num_classes])
+            t_mask = torch.unsqueeze(gt[:,i,:,:], 1).repeat([1,num_classes,1,1])
             t_logits_mask_out = target_logits * t_mask
-            t_logits_avg = torch.sum(t_logits_mask_out, [0,1,2]) / (torch.sum(gt[:,:,:,i]) + eps)
-            t_soft_prob = nn.softmax(t_logits_avg/temperature)
+            t_logits_avg = torch.sum(t_logits_mask_out, [0,2,3]) / (torch.sum(gt[:,i,:,:]) + eps)
+            t_soft_prob = F.softmax(t_logits_avg/temperature, dim=0)
 
             target_prob.append(t_soft_prob)
 

@@ -12,3 +12,4 @@
 Models/inception_v3_2016_08_28/*
 *.ckpt
 /Models/*/summary/*
+.DS_Store
