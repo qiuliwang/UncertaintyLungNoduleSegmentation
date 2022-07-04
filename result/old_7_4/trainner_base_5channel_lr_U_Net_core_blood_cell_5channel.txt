@@ -1,0 +1,19 @@
+Epoch:0	 duration:70.570	 learning_rate:0.000100	 train_loss:0.4488Epoch:0	batch_idx:49/All_batch:50	dice_s:0.8871	iou_s:0.8321	nsd_s:0.9909
+Epoch:1	 duration:65.671	 learning_rate:0.000100	 train_loss:0.4296Epoch:1	batch_idx:49/All_batch:50	dice_s:0.9028	iou_s:0.8590	nsd_s:0.9913
+Epoch:2	 duration:65.476	 learning_rate:0.000100	 train_loss:0.4268Epoch:2	batch_idx:49/All_batch:50	dice_s:0.8869	iou_s:0.8312	nsd_s:0.9898
+Epoch:3	 duration:65.530	 learning_rate:0.000100	 train_loss:0.4248Epoch:3	batch_idx:49/All_batch:50	dice_s:0.8888	iou_s:0.8340	nsd_s:0.9916
+Epoch:4	 duration:66.623	 learning_rate:0.000100	 train_loss:0.4234Epoch:4	batch_idx:49/All_batch:50	dice_s:0.9059	iou_s:0.8645	nsd_s:0.9909
+Epoch:5	 duration:65.597	 learning_rate:0.000100	 train_loss:0.4223Epoch:5	batch_idx:49/All_batch:50	dice_s:0.8366	iou_s:0.7493	nsd_s:0.9727
+Epoch:6	 duration:64.673	 learning_rate:0.000100	 train_loss:0.4207Epoch:6	batch_idx:49/All_batch:50	dice_s:0.7596	iou_s:0.6369	nsd_s:0.9308
+Epoch:7	 duration:74.475	 learning_rate:0.000100	 train_loss:0.4190Epoch:7	batch_idx:49/All_batch:50	dice_s:0.8708	iou_s:0.8037	nsd_s:0.9857
+Epoch:8	 duration:71.365	 learning_rate:0.000100	 train_loss:0.4174Epoch:8	batch_idx:49/All_batch:50	dice_s:0.9032	iou_s:0.8592	nsd_s:0.9926
+Epoch:9	 duration:68.326	 learning_rate:0.000100	 train_loss:0.4157Epoch:9	batch_idx:49/All_batch:50	dice_s:0.8428	iou_s:0.7585	nsd_s:0.9748
+Epoch:10	 duration:65.416	 learning_rate:0.000100	 train_loss:0.4143Epoch:10	batch_idx:49/All_batch:50	dice_s:0.8883	iou_s:0.8335	nsd_s:0.9913
+Epoch:11	 duration:69.819	 learning_rate:0.000100	 train_loss:0.4116Epoch:11	batch_idx:49/All_batch:50	dice_s:0.6365	iou_s:0.4857	nsd_s:0.8658
+Epoch:12	 duration:68.373	 learning_rate:0.000100	 train_loss:0.4094Epoch:12	batch_idx:49/All_batch:50	dice_s:0.6865	iou_s:0.5414	nsd_s:0.8868
+Epoch:13	 duration:65.525	 learning_rate:0.000100	 train_loss:0.4073Epoch:13	batch_idx:49/All_batch:50	dice_s:0.8042	iou_s:0.6994	nsd_s:0.9619
+Epoch:14	 duration:68.517	 learning_rate:0.000100	 train_loss:0.4061Epoch:14	batch_idx:49/All_batch:50	dice_s:0.2963	iou_s:0.1778	nsd_s:0.6565
+Epoch:15	 duration:68.275	 learning_rate:0.000100	 train_loss:0.4036Epoch:15	batch_idx:49/All_batch:50	dice_s:0.3054	iou_s:0.1829	nsd_s:0.6581
+Epoch:16	 duration:70.637	 learning_rate:0.000100	 train_loss:0.4014Epoch:16	batch_idx:49/All_batch:50	dice_s:0.3513	iou_s:0.2179	nsd_s:0.7066
+Epoch:17	 duration:68.989	 learning_rate:0.000100	 train_loss:0.3994Epoch:17	batch_idx:49/All_batch:50	dice_s:0.4138	iou_s:0.2727	nsd_s:0.7430
+Epoch:18	 duration:69.251	 learning_rate:0.000100	 train_loss:0.3977

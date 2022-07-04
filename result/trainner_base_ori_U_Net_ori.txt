@@ -1,0 +1,11 @@
+Epoch:0,duration:131.550,learning_rate:0.000100,train_loss:0.4417Epoch:0,batch_idx:49/All_batch:50,dice_s:0.8952,iou_s:0.8469,nsd_s:0.9924
+Epoch:1,duration:117.360,learning_rate:0.000100,train_loss:0.4302Epoch:1,batch_idx:49/All_batch:50,dice_s:0.9049,iou_s:0.8628,nsd_s:0.9943
+Epoch:2,duration:118.480,learning_rate:0.000100,train_loss:0.4263Epoch:2,batch_idx:49/All_batch:50,dice_s:0.8927,iou_s:0.8416,nsd_s:0.9932
+Epoch:3,duration:119.979,learning_rate:0.000099,train_loss:0.4246Epoch:3,batch_idx:49/All_batch:50,dice_s:0.9096,iou_s:0.8712,nsd_s:0.9940
+Epoch:4,duration:112.584,learning_rate:0.000098,train_loss:0.4231Epoch:4,batch_idx:49/All_batch:50,dice_s:0.9091,iou_s:0.8700,nsd_s:0.9934
+Epoch:5,duration:113.728,learning_rate:0.000098,train_loss:0.4216Epoch:5,batch_idx:49/All_batch:50,dice_s:0.8963,iou_s:0.8471,nsd_s:0.9927
+Epoch:6,duration:117.018,learning_rate:0.000096,train_loss:0.4199Epoch:6,batch_idx:49/All_batch:50,dice_s:0.9091,iou_s:0.8702,nsd_s:0.9940
+Epoch:7,duration:122.343,learning_rate:0.000095,train_loss:0.4180Epoch:7,batch_idx:49/All_batch:50,dice_s:0.8685,iou_s:0.8008,nsd_s:0.9887
+Epoch:8,duration:118.397,learning_rate:0.000094,train_loss:0.4160Epoch:8,batch_idx:49/All_batch:50,dice_s:0.9025,iou_s:0.8583,nsd_s:0.9937
+Epoch:9,duration:123.183,learning_rate:0.000092,train_loss:0.4141Epoch:9,batch_idx:49/All_batch:50,dice_s:0.8776,iou_s:0.8156,nsd_s:0.9908
+Epoch:10,duration:122.106,learning_rate:0.000090,train_loss:0.4120
