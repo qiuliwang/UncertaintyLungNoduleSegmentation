@@ -42,9 +42,9 @@ if config.resume:
     # Load checkpoint.
     print('==> Resuming from checkpoint..')
     if config.evaluate:
-        checkpoint = torch.load('./checkpoint/' + str(model_name) + '_best.pth.tar')
+        checkpoint = torch.load('./checkpoint/U_Net_grey_best.pth.tar')
     else:
-        checkpoint = torch.load('./checkpoint/' + str(model_name) + '.pth.tar')
+        checkpoint = torch.load('./checkpoint/U_Net_grey.pth.tar')
     model.load_state_dict(checkpoint['model'])
     optimizer.load_state_dict(checkpoint['optimizer'])
     best_dice = checkpoint['dice']
@@ -126,11 +126,42 @@ def test(epoch):
             ious_all_s = meandIoU(outputs_final_sig, targets_s, ious_all_s)
             nsds_all_s = meanNSD(outputs_final_sig, targets_s, nsds_all_s)
 
+            # 保存图像
+            if config.evaluate:
+                basePath = os.path.join(config.figurePath, str(os.path.basename(__file__).split('.')[0]) + '_' + model_name + '/fold' + str(config.fold))
+                inputsPath = os.path.join(basePath, 'inputs')
+                masksPath_s = os.path.join(basePath, 'masks_s')
+                outputsPath_s = os.path.join(basePath, 'outputs_s')
+                if not os.path.exists(inputsPath):
+                    os.makedirs(inputsPath)
+                if not os.path.exists(masksPath_s):
+                    os.makedirs(masksPath_s)
+                if not os.path.exists(outputsPath_s):
+                    os.makedirs(outputsPath_s)
+
+                num = inputs.shape[0]
+                inputsfolder = inputs.chunk(num, dim=0)
+                masksfolder_s = targets_s.chunk(num, dim=0)
+                outputsfolder_s = outputs_final_sig.chunk(num, dim=0)
+                for index in range(num):
+                    input = inputsfolder[index]
+                    input = input.squeeze()
+                    imageio.imsave(os.path.join(inputsPath, str(epoch) + '_' + str(batch_idx*config.batch_size+index+1) + '.jpg'), input.cpu().detach().numpy())
+
+                    target_s = masksfolder_s[index]
+                    target_s = target_s.squeeze()
+                    imageio.imsave(os.path.join(masksPath_s, str(epoch) + '_' + str(batch_idx*config.batch_size+index+1) + '.jpg'), target_s.cpu().detach().numpy())
+
+                    output_s = outputsfolder_s[index]
+                    output_s = output_s.squeeze()
+                    imageio.imsave(os.path.join(outputsPath_s, str(epoch) + '_' + str(batch_idx*config.batch_size+index+1) + '.jpg'), output_s.cpu().detach().numpy())
+    
+
         print('Epoch:{}\tbatch_idx:{}/All_batch:{}\tdice_s:{:.4f}\tiou_s:{:.4f}\tnsd_s:{:.4f}'.format(epoch, batch_idx, len(dataloader_val), np.mean(np.array(dices_all_s)), np.mean(np.array(ious_all_s)), np.mean(np.array(nsds_all_s))))
         with open('result/' + str(os.path.basename(__file__).split('.')[0]) + '_' + model_name + '.txt', 'a+') as f:
             f.write('Epoch:{},batch_idx:{}/All_batch:{},dice_s:{:.4f},iou_s:{:.4f},nsd_s:{:.4f}'
             .format(epoch, batch_idx, len(dataloader_val), np.mean(np.array(dices_all_s)), np.mean(np.array(ious_all_s)), np.mean(np.array(nsds_all_s)))+ '\n')
-
+                
     # Save checkpoint.
     if config.resume is False:
         dice = np.mean(np.array(dices_all_s))
@@ -162,5 +193,5 @@ if __name__ == '__main__':
         test(start_epoch)
     else:
         for epoch in tqdm(range(start_epoch, config.epochs)):
-            train(epoch)
+            # train(epoch)
             test(epoch)

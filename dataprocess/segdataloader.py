@@ -32,11 +32,9 @@ def normalazation(image_array):
 
 
 class Dataset(torch.utils.data.Dataset):
-    def __init__(self, datas, core, blood, masks, label=None, width = 512, height = 512):
+    def __init__(self, datas, masks, label=None, width = 512, height = 512):
         self.size = (width, height)
         self.datas = datas 
-        self.core = core
-        self.blood = blood
         self.masks = masks
 
         self.img_resize = Compose([
@@ -56,8 +54,6 @@ class Dataset(torch.utils.data.Dataset):
         ])
 
         self.input_paths = self.datas
-        self.core_paths = self.core
-        self.blood_paths = self.blood
         self.mask_path = self.masks
 
         print('Training data:')
@@ -65,13 +61,8 @@ class Dataset(torch.utils.data.Dataset):
 
     def __getitem__(self, index):
         input = Image.open(self.input_paths[index])
-        core = Image.open(self.core_paths[index])
-        blood = Image.open(self.blood_paths[index])
         mask = Image.open(self.mask_path[index])
-
         input = self.img_resize(input)
-        core = self.img_resize(core)
-        blood = self.img_resize(blood)
         mask = self.img_resize(mask)
 
         # torch.from_numpy(input)
@@ -79,16 +70,14 @@ class Dataset(torch.utils.data.Dataset):
         # torch.from_numpy(media)
 
         # 归一化
-        input = self.img_transform_gray(input)
-        core = self.img_transform_gray(core)
-        blood = self.img_transform_gray(blood)
+        input = self.img_transform_rgb(input)
         mask = self.img_transform_gray(mask)
 
         # 二值化
         mask[mask > 0.5] = 1
         mask[mask < 0.5] = 0
 
-        return input, core, blood, mask
+        return input, mask
 
     def __len__(self):
         return len(self.input_paths)

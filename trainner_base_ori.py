@@ -67,24 +67,20 @@ def adjust_lr(optimizer, epoch, eta_max=0.0001, eta_min=0.):
     return cur_lr
 
 def train(epoch):
+    print('Training Epoch: ', epoch)
     model.train()
     train_loss = 0
 
     start_time = time.time()
     lr = adjust_lr(optimizer, epoch)
-    for batch_idx, (inputs, core, blood, targets_s) in tqdm(enumerate(dataloader)):
+    for batch_idx, (inputs, targets_s) in tqdm(enumerate(dataloader)):
         iter_start_time = time.time()
         inputs = inputs.cuda()
-        core = core.cuda()
-        blood = blood.cuda()
         targets_s = targets_s.cuda()
-        # inputs = torch.cat((inputs, core, blood), 1)
         outputs = model(inputs)
 
         outputs_s_sig = torch.sigmoid(outputs)
-
         loss_seg = criterion(outputs_s_sig, targets_s)
-
         loss_all = loss_seg
 
         optimizer.zero_grad()
@@ -96,35 +92,58 @@ def train(epoch):
     print('Epoch:{0}\t duration:{1:.3f}\ttrain_loss:{2:.6f}'.format(epoch, time.time()-start_time, train_loss/len(dataloader)))
     
     with open('result/' + str(os.path.basename(__file__).split('.')[0]) + '_' + model_name + '.txt', 'a+') as f:
-        f.write('Epoch:{0},duration:{1:.3f},learning_rate:{2:.6f},train_loss:{3:.4f}'
+        f.write('Epoch:{0},duration:{1:.3f},learning_rate:{2:.6f},train_loss:{3:.4f}, '
           .format(epoch, time.time()-start_time, lr, train_loss/len(dataloader)))
 
 def test(epoch):
+    print('Testing Epoch: ', epoch)
     global best_dice
     model.eval()
-    dices_all_i = []
-    dices_all_u = []
     dices_all_s = []
-    ious_all_i = []
-    ious_all_u = []
     ious_all_s = []
-    nsds_all_i = []
-    nsds_all_u = []
     nsds_all_s = []
+
     with torch.no_grad():
-        for batch_idx, (inputs, core, blood, targets_s) in enumerate(dataloader_val):
+        for batch_idx, (inputs, targets_s) in enumerate(dataloader_val):
             inputs = inputs.cuda()
-            core = core.cuda()
-            blood = blood.cuda()
             targets_s = targets_s.cuda()
-            # inputs = torch.cat((inputs, core, blood), 1)
-        
+
             outputs = model(inputs)
             outputs_final_sig = torch.sigmoid(outputs)
 
             dices_all_s = meandice(outputs_final_sig, targets_s, dices_all_s)
             ious_all_s = meandIoU(outputs_final_sig, targets_s, ious_all_s)
             nsds_all_s = meanNSD(outputs_final_sig, targets_s, nsds_all_s)
+
+            # saving image
+            if config.evaluate and (epoch == 74 or epoch == 149 or epoch == 0):
+                basePath = os.path.join(config.figurePath, str(os.path.basename(__file__).split('.')[0]) + '_' + model_name + '/fold' + str(config.fold))
+                inputsPath = os.path.join(basePath, str(epoch), 'inputs')
+                masksPath_s = os.path.join(basePath, str(epoch), 'masks_s')
+                outputsPath_s = os.path.join(basePath, str(epoch), 'outputs_s')
+                if not os.path.exists(inputsPath):
+                    os.makedirs(inputsPath)
+                if not os.path.exists(masksPath_s):
+                    os.makedirs(masksPath_s)
+                if not os.path.exists(outputsPath_s):
+                    os.makedirs(outputsPath_s)
+
+                num = inputs.shape[0]
+                inputsfolder = inputs.chunk(num, dim=0)
+                masksfolder_s = targets_s.chunk(num, dim=0)
+                outputsfolder_s = outputs_final_sig.chunk(num, dim=0)
+                for index in range(num):
+                    input = inputsfolder[index]
+                    input = input.squeeze()
+                    imageio.imsave(os.path.join(inputsPath, str(epoch) + '_' + str(batch_idx*config.batch_size+index+1) + '.jpg'), input.cpu().detach().numpy().transpose(1,2,0))
+
+                    target_s = masksfolder_s[index]
+                    target_s = target_s.squeeze()
+                    imageio.imsave(os.path.join(masksPath_s, str(epoch) + '_' + str(batch_idx*config.batch_size+index+1) + '_mask.jpg'), target_s.cpu().detach().numpy())
+
+                    output_s = outputsfolder_s[index]
+                    output_s = output_s.squeeze()
+                    imageio.imsave(os.path.join(outputsPath_s, str(epoch) + '_' + str(batch_idx*config.batch_size+index+1) + '_pre.jpg'), output_s.cpu().detach().numpy())
 
         print('Epoch:{}\tbatch_idx:{}/All_batch:{}\tdice_s:{:.4f}\tiou_s:{:.4f}\tnsd_s:{:.4f}'.format(epoch, batch_idx, len(dataloader_val), np.mean(np.array(dices_all_s)), np.mean(np.array(ious_all_s)), np.mean(np.array(nsds_all_s))))
         with open('result/' + str(os.path.basename(__file__).split('.')[0]) + '_' + model_name + '.txt', 'a+') as f:

@@ -6,12 +6,12 @@ class Config(object):
     """ Wrapper class for various (hyper)parameters. """
     def __init__(self):
         # about the model architecture
-        self.arch = 'U_Net_grey_blood'
+        self.arch = 'U_Net_ori'
         # self.arch = 'U_Net_grey'
         # training settings
-        self.epochs = 300
+        self.epochs = 150
         self.learning_rate = 0.0001
-        self.gpu = 5
+        self.gpu = 7
         self.evaluate = True # test or train
         self.resume = False
         self.num_classes = 3
@@ -26,7 +26,7 @@ class Config(object):
         self.weight_im = 0.9
         self.weight_kd = 0.5
         self.weight_edge = 0.5
-        self.batch_size = 16
+        self.batch_size = 32
 
         # cross validation settings
         self.fold = 1
@@ -40,9 +40,9 @@ class Config(object):
         self.test_fold_index = [self.fold]
 
         # paths 
-        self.mask_path = '/home1/qiuliwang/Code/wsi_extractor_python/512Crop_npy/'
-        self.image_path = '/home1/qiuliwang/Code/wsi_extractor_python/512Crop/'
-        self.csvPath = './dataprocess/split_csv/' # fold_csv 
+        self.mask_path = '/home1/qiuliwang/Code/wsi_extractor_python/Glioma_Extracted_Patch_512/'
+        self.image_path = '/home1/qiuliwang/Code/wsi_extractor_python/Glioma_Extracted_Patch_512/'
+        self.csvPath = '/home1/qiuliwang/Code/wsi_extractor_python/PrepareDatasetCsv/' # fold_csv 
 
         self.figurePath = './result/figure/'
 
