@@ -123,4 +123,16 @@ def load_pretrained_weights(model, name):
     model.load_state_dict(pretrained_dict, strict=False)
     return model
 
+class ResNet_Binary(nn.Module):
+    def __init__(self):
+        super(ResNet_Binary, self).__init__()
+        self.res_model = resnet50_baseline()
+        self.fc1 = nn.Linear(1024, 256)
+        self.fc2 = nn.Linear(256, 2)
 
+    def forward(self, x):
+        x = self.res_model(x)
+        x = self.fc1(x)
+        x = self.fc2(x)
+
+        return x

@@ -75,11 +75,11 @@ class Dataset(torch.utils.data.Dataset):
         mask[mask < 0.5] = 0
         
         if self.labels[index] == '1':
-            label = 1
+            label = [1.0, 0.0]
         else:
-            label = 0
+            label = [0.0, 1.0]
         
-        return input, mask, label
+        return input, mask, np.array(label)
 
     def __len__(self):
         return len(self.input_paths)
