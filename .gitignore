@@ -14,4 +14,4 @@ Models/inception_v3_2016_08_28/*
 /Models/*/summary/*
 .DS_Store
 checkpoint/
-result/
+*/result/
