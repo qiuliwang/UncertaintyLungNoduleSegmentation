@@ -6,7 +6,7 @@ class Config(object):
     """ Wrapper class for various (hyper)parameters. """
     def __init__(self):
         # about the model architecture
-        self.arch = 'U_Net_ori'
+        self.arch = 'U_Net_ori_2048'
         # self.arch = 'U_Net_grey'
         # training settings
         self.epochs = 150
@@ -40,8 +40,8 @@ class Config(object):
         self.test_fold_index = [self.fold]
 
         # paths 
-        self.mask_path = '/home1/qiuliwang/Code/wsi_extractor_python/Glioma_Extracted_Patch_512/'
-        self.image_path = '/home1/qiuliwang/Code/wsi_extractor_python/Glioma_Extracted_Patch_512/'
+        self.mask_path = '/home1/qiuliwang/Code/wsi_extractor_python/Glioma_Extracted_Patch_2048/'
+        self.image_path = '/home1/qiuliwang/Code/wsi_extractor_python/Glioma_Extracted_Patch_2048/'
         self.csvPath = '/home1/qiuliwang/Code/wsi_extractor_python/PrepareDatasetCsv/' # fold_csv 
 
         self.figurePath = './result/figure/'

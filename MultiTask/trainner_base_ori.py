@@ -14,9 +14,9 @@ import imageio
 import math
 from bisect import bisect_right
 import cv2
-from models.resnet_custom import resnet50_baseline
 
-resnet = models.resnet50(pretrained=True)
+from model.resnet_custom import resnet50_baseline
+classify_model = resnet50_baseline(pretrained=True)
 
 config = Config()
 
@@ -76,11 +76,13 @@ def train(epoch):
 
     start_time = time.time()
     lr = adjust_lr(optimizer, epoch)
-    for batch_idx, (inputs, targets_s) in tqdm(enumerate(dataloader)):
+    for batch_idx, (inputs, targets_s, label) in tqdm(enumerate(dataloader)):
         iter_start_time = time.time()
         inputs = inputs.cuda()
         targets_s = targets_s.cuda()
         outputs = model(inputs)
+        print(label)
+        label = label.cuda()
 
         outputs_s_sig = torch.sigmoid(outputs)
         loss_seg = criterion(outputs_s_sig, targets_s)
@@ -107,10 +109,10 @@ def test(epoch):
     nsds_all_s = []
 
     with torch.no_grad():
-        for batch_idx, (inputs, targets_s) in enumerate(dataloader_val):
+        for batch_idx, (inputs, targets_s, label) in enumerate(dataloader_val):
             inputs = inputs.cuda()
             targets_s = targets_s.cuda()
-
+            label = label.cuda()
             outputs = model(inputs)
             outputs_final_sig = torch.sigmoid(outputs)
 

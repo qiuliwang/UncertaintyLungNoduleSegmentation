@@ -12,30 +12,33 @@ def readCSV(filename):
     with open(filename, "r") as f:
         csvreader = csv.reader(f)
         for line in csvreader:
-            lines.append(line[0])
+            lines.append(line)
     return lines
 
 
 def get_dataloader(config, mode='train', batchsize=64, width=512, height=512):
 
-    train_datas = readCSV(os.path.join(config.csvPath, 'training_split_labeled.csv'))
-    train_masks = readCSV(os.path.join(config.csvPath, 'training_split_labeled.csv'))
+    train_datas = readCSV(os.path.join(config.csvPath, 'temp_training_split.csv'))
+    train_masks = readCSV(os.path.join(config.csvPath, 'temp_training_split.csv'))
 
-    test_datas = readCSV(os.path.join(config.csvPath, 'testing_split_labeled.csv'))
-    test_masks = readCSV(os.path.join(config.csvPath, 'testing_split_labeled.csv'))
+    test_datas = readCSV(os.path.join(config.csvPath, 'temp_testing_split.csv'))
+    test_masks = readCSV(os.path.join(config.csvPath, 'temp_testing_split.csv'))
 
     
     if mode=='train':
         # remove features labels
         temp_train_datas = []
+        temp_train_labels = []
+
         for one in train_datas:
-            one_temp = one
-            temp_train_datas.append(one_temp)
+            temp_train_datas.append(one[0])
+            temp_train_labels.append(one[1])
 
         temp_test_datas = []
+        temp_test_labels = []
         for one in test_datas:
-            one_temp = one 
-            temp_test_datas.append(one_temp)
+            temp_test_datas.append(one[0])
+            temp_test_labels.append(one[1])
 
         temp2_train_data = []
         temp2_train_mask = []
@@ -59,7 +62,7 @@ def get_dataloader(config, mode='train', batchsize=64, width=512, height=512):
         print('the length of train data: ', len(temp2_train_data))
         print('the length of test data: ', len(temp2_test_data))
         print('-----------')
-        dataloader = loader(Dataset(temp2_train_data, temp2_train_mask, width = width, height = height), batchsize)
-        dataloader_val = loader(Dataset(temp2_test_data, temp2_test_mask, width = width, height = height), batchsize)
+        dataloader = loader(Dataset(temp2_train_data, temp2_train_mask, temp_train_labels, width = width, height = height), batchsize)
+        dataloader_val = loader(Dataset(temp2_test_data, temp2_test_mask, temp_test_labels, width = width, height = height), batchsize)
 
         return dataloader, dataloader_val

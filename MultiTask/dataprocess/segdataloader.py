@@ -32,7 +32,7 @@ def normalazation(image_array):
 
 
 class Dataset(torch.utils.data.Dataset):
-    def __init__(self, datas, masks, label=None, width = 512, height = 512):
+    def __init__(self, datas, masks, labels, label=None, width = 512, height = 512):
         self.size = (width, height)
         self.datas = datas 
         self.masks = masks
@@ -55,6 +55,7 @@ class Dataset(torch.utils.data.Dataset):
 
         self.input_paths = self.datas
         self.mask_path = self.masks
+        self.labels = labels
 
         print('Training data:')
         print(len(self.datas))
@@ -65,10 +66,6 @@ class Dataset(torch.utils.data.Dataset):
         input = self.img_resize(input)
         mask = self.img_resize(mask)
 
-        # torch.from_numpy(input)
-        # torch.from_numpy(lung)
-        # torch.from_numpy(media)
-
         # 归一化
         input = self.img_transform_rgb(input)
         mask = self.img_transform_gray(mask)
@@ -76,59 +73,13 @@ class Dataset(torch.utils.data.Dataset):
         # 二值化
         mask[mask > 0.5] = 1
         mask[mask < 0.5] = 0
-
-        return input, mask
-
-    def __len__(self):
-        return len(self.input_paths)
-
-
-class Dataset_val(torch.utils.data.Dataset):
-    def __init__(self, datas, masks, label = None, width = 256, height = 256):
-        self.size = (width, height)
-        self.data = datas
-        self.mask = masks
-        self.img_resize = Compose([
-            Scale(self.size, Image.BILINEAR),
-        ])
-        self.label_resize = Compose([
-            Scale(self.size, Image.NEAREST),
-        ])
-        self.img_transform_gray = Compose([
-            ToTensor(),
-            Normalize(mean=[0.448749], std=[0.399953])  # 这个归一化方式可以提升近1个点的dice
-        ])
-
-        self.img_transform_rgb = Compose([
-            ToTensor(),
-            Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-        ])
-
-        self.input_paths = self.data
-        self.mask_paths = self.mask
-
-        print('Testing data:')
-        print(len(self.input_paths))
-
-    def __getitem__(self, index):
-        input = Image.open(self.input_paths[index])
-        mask = Image.open(self.mask_paths[index])
-
-        input = self.img_resize(input)
-        mask = self.img_resize(mask)
-
-        # torch.from_numpy(input)
-        # torch.from_numpy(media)
-
-        input = self.img_transform_gray(input)
-        mask = self.img_transform_gray(mask)
-
-        # 二值化
-        mask[mask > 0.5] = 1
-        mask[mask < 0.5] = 0
         
-
-        return input, mask
+        if self.labels[index] == '1':
+            label = 1
+        else:
+            label = 0
+        
+        return input, mask, label
 
     def __len__(self):
         return len(self.input_paths)
