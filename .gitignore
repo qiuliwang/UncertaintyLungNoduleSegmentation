@@ -15,3 +15,5 @@ Models/inception_v3_2016_08_28/*
 .DS_Store
 checkpoint/
 */result/
+*.png
+*.jpg

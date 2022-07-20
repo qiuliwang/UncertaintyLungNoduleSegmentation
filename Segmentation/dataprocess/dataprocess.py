@@ -18,11 +18,11 @@ def readCSV(filename):
 
 def get_dataloader(config, mode='train', batchsize=64, width=512, height=512):
 
-    train_datas = readCSV(os.path.join(config.csvPath, 'training_split_labeled.csv'))
-    train_masks = readCSV(os.path.join(config.csvPath, 'training_split_labeled.csv'))
+    train_datas = readCSV(os.path.join(config.csvPath, '512List/training_split_labeled.csv'))
+    train_masks = readCSV(os.path.join(config.csvPath, '512List/training_split_labeled.csv'))
 
-    test_datas = readCSV(os.path.join(config.csvPath, 'testing_split_labeled.csv'))
-    test_masks = readCSV(os.path.join(config.csvPath, 'testing_split_labeled.csv'))
+    test_datas = readCSV(os.path.join(config.csvPath, '512List/testing_split_labeled.csv'))
+    test_masks = readCSV(os.path.join(config.csvPath, '512List/testing_split_labeled.csv'))
 
     
     if mode=='train':

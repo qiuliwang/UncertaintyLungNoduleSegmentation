@@ -27,8 +27,8 @@ if config.resume is False:
         f.seek(0)
         f.truncate()
 
-model = U_Net(3,1)
-# model = AttU_Net()
+# model = U_Net(3,1)
+model = AttU_Net(3, 1)
 # model = R2U_Net ()
 
 model.cuda()
